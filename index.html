@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Beauty Salon — Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ color-scheme: light;}
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    /* iOS safe area padding for sticky footer */
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+    .no-tap-highlight{-webkit-tap-highlight-color: rgba(0,0,0,0);}
+    /* simple card shadow */
+    .card{ box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+  </style>
+</head>
+<body class="bg-pink-50 text-slate-800 no-tap-highlight">
+  <!-- App Header -->
+  <header class="sticky top-0 z-30 bg-pink-600 text-white">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
+      <button aria-label="Back" class="p-2 rounded-xl bg-white/15 hover:bg-white/25">
+        <!-- back icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <h1 class="font-semibold text-lg tracking-wide">Beauty Salon</h1>
+      <div class="ml-auto p-2 rounded-xl bg-white/15">
+        <!-- menu icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="max-w-md mx-auto pb-36 safe-bottom">
+    <!-- Search -->
+    <div class="px-4 mt-4">
+      <label class="sr-only" for="q">Cari</label>
+      <div class="relative">
+        <input id="q" class="w-full rounded-2xl bg-white border border-pink-100 py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-pink-300"
+               placeholder="Cari layanan / stylist..." />
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <section class="px-4 mt-6">
+      <h2 class="text-sm font-semibold text-pink-700">OUR SERVICE</h2>
+      <div id="services" class="mt-3 grid grid-cols-3 gap-3">
+        <!-- item template is JS-populated -->
+      </div>
+    </section>
+
+    <!-- Banner -->
+    <section class="px-4 mt-6">
+      <div class="card rounded-2xl bg-gradient-to-r from-pink-100 to-pink-50 p-4 flex items-center gap-4">
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-pink-700">Kunjungi Portofolio</p>
+          <p class="text-xs text-slate-600">Lihat hasil makeover terbaru kami</p>
+        </div>
+        <button class="rounded-xl bg-pink-600 text-white text-sm font-medium px-4 py-2">Lihat</button>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="px-4 mt-6">
+      <h2 class="text-sm font-semibold text-pink-700">OUR TEAM</h2>
+      <div id="team" class="mt-3 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2">
+        <!-- cards populated by JS -->
+      </div>
+    </section>
+
+    <!-- Specialist Detail + Calendar + Slots -->
+    <section class="px-4 mt-6">
+      <div class="card rounded-3xl bg-white">
+        <!-- header -->
+        <div class="p-4 border-b border-pink-100 flex items-center gap-3">
+          <img id="profile-photo" alt="" class="h-14 w-14 rounded-full object-cover"
+               src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" />
+          <div class="flex-1">
+            <div class="flex items-center gap-1 text-pink-600">
+              <span class="font-semibold">4.5</span>
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.802 2.035a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.802-2.035a1 1 0 00-1.175 0l-2.802 2.035c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.95-.69l1.07-3.292z"/></svg>
+            </div>
+            <p id="profile-name" class="font-semibold leading-tight">Janet Jones</p>
+            <p class="text-xs text-slate-500">Hair Specialist</p>
+          </div>
+          <button class="p-2 rounded-xl bg-pink-50 text-pink-600" title="Favorit" aria-label="Favorit">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.49 5.49 0 017.5 3a5.87 5.87 0 014.5 2.09A5.87 5.87 0 0116.5 3 5.49 5.49 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </button>
+        </div>
+
+        <!-- price -->
+        <div class="px-4 pt-3 grid grid-cols-2 gap-3 text-sm">
+          <div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between">
+            <span>Hair Care</span><span class="font-semibold text-pink-700">Rp 450k</span>
+          </div>
+          <div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between">
+            <span>Make Up</span><span class="font-semibold text-pink-700">Rp 600k</span>
+          </div>
+        </div>
+
+        <!-- calendar -->
+        <div class="px-4 mt-4">
+          <div class="text-xs text-slate-500 font-medium">JULY</div>
+          <div id="week" class="mt-2 grid grid-cols-7 gap-1 text-center">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- time slots -->
+        <div class="px-4 py-4">
+          <div class="text-sm font-semibold text-pink-700 mb-2">Pilih Jam</div>
+          <div id="slots" class="grid grid-cols-2 gap-2">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky Book bar -->
+  <div class="fixed bottom-0 left-0 right-0 z-40">
+    <div class="max-w-md mx-auto px-4 pb-4 pt-3 bg-white/90 backdrop-blur border-t border-pink-100 safe-bottom">
+      <div class="flex items-center gap-3">
+        <div class="flex-1">
+          <p id="summary" class="text-xs text-slate-600">Belum ada pilihan.</p>
+        </div>
+        <button id="btnBook" class="rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-semibold text-sm px-5 py-3 disabled:opacity-50" disabled>
+          Book Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <dialog id="dlg" class="rounded-2xl p-0 border-0 w-[92%] max-w-md">
+    <div class="card rounded-2xl bg-white">
+      <div class="p-4 border-b border-pink-100 flex items-center justify-between">
+        <h3 class="font-semibold">Konfirmasi Booking</h3>
+        <button id="dlgClose" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100" aria-label="Tutup">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" fill="none"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="p-4 text-sm">
+        <p class="mb-1"><span class="text-slate-500">Nama:</span> <span id="cName" class="font-medium"></span></p>
+        <p class="mb-1"><span class="text-slate-500">Layanan:</span> <span id="cService" class="font-medium"></span></p>
+        <p class="mb-1"><span class="text-slate-500">Tanggal:</span> <span id="cDate" class="font-medium"></span></p>
+        <p class="mb-1"><span class="text-slate-500">Jam:</span> <span id="cTime" class="font-medium"></span></p>
+      </div>
+      <div class="p-4 pt-0">
+        <button id="dlgConfirm" class="w-full rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3">Konfirmasi</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // --- Fake data (bisa diganti dari API) ---
+    const services = [
+      { id:'style',   name:'Hair Style',  icon:'💇‍♀️' },
+      { id:'facial',  name:'Facial',      icon:'🧖‍♀️' },
+      { id:'makeup',  name:'Make Up',     icon:'💄' },
+      { id:'care',    name:'Hair Care',   icon:'🧴' },
+      { id:'color',   name:'Coloring',    icon:'🎨' },
+      { id:'spa',     name:'SPA',         icon:'🛀' }
+    ];
+
+    const team = [
+      { id:1, name:'Janet Jones', role:'Hair Specialist', rating:4.5,
+        photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop' },
+      { id:2, name:'Amelia Reed', role:'Makeup Artist', rating:4.7,
+        photo:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop' },
+      { id:3, name:'Mina Clark', role:'Facialist', rating:4.6,
+        photo:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop' },
+    ];
+
+    const timeSlots = ['09:00 AM','10:30 AM','11:40 AM','12:00 PM','13:30 PM','14:30 PM','16:00 PM','17:30 PM'];
+
+    // --- State ---
+    const state = {
+      service: null,
+      stylist: team[0],
+      date: null,
+      time: null,
+    };
+
+    // --- UI builders ---
+    function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+
+    // Services
+    const servicesWrap = document.getElementById('services');
+    services.forEach(s=>{
+      const node = el(`
+        <button data-id="${s.id}" class="group rounded-2xl bg-white border border-pink-100 p-4 text-center flex flex-col items-center justify-center gap-2 hover:border-pink-300">
+          <span class="text-2xl">${s.icon}</span>
+          <span class="text-xs font-medium">${s.name}</span>
+        </button>
+      `);
+      node.addEventListener('click', ()=>{
+        state.service = s.name;
+        [...servicesWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
+        node.classList.add('ring-2','ring-pink-400');
+        updateSummary();
+      });
+      servicesWrap.appendChild(node);
+    });
+
+    // Team
+    const teamWrap = document.getElementById('team');
+    team.forEach((m,i)=>{
+      const card = el(`
+        <button class="snap-start min-w-[220px] card bg-white rounded-2xl text-left overflow-hidden">
+          <div class="flex items-center gap-3 p-3">
+            <img class="h-12 w-12 rounded-full object-cover" src="${m.photo}" alt="${m.name}">
+            <div class="flex-1">
+              <p class="font-semibold text-sm leading-tight">${m.name}</p>
+              <p class="text-xs text-slate-500">${m.role}</p>
+              <p class="text-xs text-pink-600 font-medium mt-0.5">★ ${m.rating}</p>
+            </div>
+          </div>
+        </button>
+      `);
+      card.addEventListener('click', ()=>{
+        state.stylist = m;
+        document.getElementById('profile-photo').src = m.photo;
+        document.getElementById('profile-name').textContent = m.name;
+        [...teamWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
+        card.classList.add('ring-2','ring-pink-400');
+        updateSummary();
+      });
+      if(i===0) card.classList.add('ring-2','ring-pink-400');
+      teamWrap.appendChild(card);
+    });
+
+    // Week calendar (current week)
+    const weekWrap = document.getElementById('week');
+    const now = new Date();
+    const start = new Date(now);
+    start.setDate(now.getDate() - now.getDay()); // sunday
+    for(let i=0;i<7;i++){
+      const d = new Date(start); d.setDate(start.getDate()+i);
+      const isToday = d.toDateString()===now.toDateString();
+      const node = el(`
+        <button class="rounded-xl py-2 px-2 text-xs ${isToday?'bg-pink-600 text-white':'bg-pink-50 text-pink-700'}">
+          <div class="uppercase">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][i]}</div>
+          <div class="font-bold">${d.getDate()}</div>
+        </button>
+      `);
+      node.addEventListener('click', ()=>{
+        state.date = d;
+        [...weekWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400', 'bg-pink-600','text-white'));
+        node.classList.add('ring-2','ring-pink-400');
+        updateSummary();
+      });
+      weekWrap.appendChild(node);
+    }
+
+    // Slots
+    const slotsWrap = document.getElementById('slots');
+    timeSlots.forEach(t=>{
+      const btn = el(`<button class="rounded-2xl border border-pink-200 bg-white px-4 py-3 text-sm hover:border-pink-400">${t}</button>`);
+      btn.addEventListener('click', ()=>{
+        state.time = t;
+        [...slotsWrap.children].forEach(c=>c.classList.remove('bg-pink-600','text-white','border-pink-600'));
+        btn.classList.add('bg-pink-600','text-white','border-pink-600');
+        updateSummary();
+      });
+      slotsWrap.appendChild(btn);
+    });
+
+    // Summary + Book button
+    const summary = document.getElementById('summary');
+    const btnBook = document.getElementById('btnBook');
+    function updateSummary(){
+      const s = state;
+      const parts = [];
+      if(s.service) parts.push(s.service);
+      if(s.stylist) parts.push(`with ${s.stylist.name}`);
+      if(s.date) parts.push(s.date.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'short'}));
+      if(s.time) parts.push(s.time);
+      summary.textContent = parts.length? parts.join(' • ') : 'Belum ada pilihan.';
+      btnBook.disabled = !(s.service && s.stylist && s.date && s.time);
+    }
+
+    // Modal handlers
+    const dlg = document.getElementById('dlg');
+    document.getElementById('dlgClose').onclick = ()=> dlg.close();
+    document.getElementById('dlgConfirm').onclick = ()=>{
+      dlg.close();
+      // Simulasi submit
+      alert('Booking tersimpan! (hook ke API di sini)');
+    };
+    btnBook.onclick = ()=>{
+      document.getElementById('cName').textContent = state.stylist?.name ?? '-';
+      document.getElementById('cService').textContent = state.service ?? '-';
+      document.getElementById('cDate').textContent = state.date ? state.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-';
+      document.getElementById('cTime').textContent = state.time ?? '-';
+      dlg.showModal();
+    };
+
+    // Init default selections (today + first slot)
+    state.date = new Date();
+    weekWrap.children[new Date().getDay()].classList.add('ring-2','ring-pink-400');
+    slotsWrap.children[0].classList.add('bg-pink-600','text-white','border-pink-600');
+    state.time = timeSlots[0];
+    servicesWrap.children[0].classList.add('ring-2','ring-pink-400');
+    state.service = services[0].name;
+    updateSummary();
+  </script>
+</body>
+</html>
