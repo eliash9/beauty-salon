@@ -31,6 +31,19 @@
     <div class="mt-3 card bg-white rounded-2xl p-4 text-sm leading-6 text-slate-700">
       <p id="aboutText">Kami adalah salon kecantikan yang fokus pada pelayanan ramah, hasil berkualitas, dan pengalaman yang menyenangkan.</p>
     </div>
+
+    <div class="mt-4 grid gap-4">
+      <div class="card bg-white rounded-2xl p-4">
+        <h3 class="font-semibold text-pink-700 mb-2">Alamat</h3>
+        <p id="addressText" class="text-sm text-slate-700">Alamat belum diset.</p>
+      </div>
+      <div class="card bg-white rounded-2xl overflow-hidden">
+        <div class="aspect-video">
+          <iframe id="mapFrame" class="w-full h-full" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Salon%20Kecantikan&output=embed" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Mobile Bottom Nav -->
@@ -42,6 +55,8 @@
   {
     "salonName": "Beauty Salon",
     "ownerWhatsApp": "6281234567890",
+    "address": "Jl. Contoh No. 123, Jakarta",
+    "mapEmbedUrl": "",
     "pages": [
       {"id":"home","name":"Beranda","href":"index.html"},
       {"id":"services","name":"Layanan","href":"layanan.html"},
@@ -84,6 +99,17 @@
         if (location.pathname.endsWith(p.href)) a.classList.add('ring-2','ring-white/70');
         nav.appendChild(a);
       });
+    }
+
+    // Address + Map
+    const addr = cfg.address || '';
+    const holder = document.getElementById('addressText');
+    if (holder) holder.textContent = addr || 'Alamat belum diset.';
+    const iframe = document.getElementById('mapFrame');
+    if (iframe) {
+      let src = cfg.mapEmbedUrl && cfg.mapEmbedUrl.trim();
+      if (!src && addr) src = `https://www.google.com/maps?q=${encodeURIComponent(addr)}&output=embed`;
+      if (src) iframe.src = src;
     }
   </script>
 </body>

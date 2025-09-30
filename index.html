@@ -87,14 +87,10 @@
           </button>
         </div>
 
-        <!-- price -->
-        <div class="px-4 pt-3 grid grid-cols-2 gap-3 text-sm">
-          <div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between">
-            <span>Perawatan Rambut</span><span class="font-semibold text-pink-700">Rp 450k</span>
-          </div>
-          <div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between">
-            <span>Rias Wajah</span><span class="font-semibold text-pink-700">Rp 600k</span>
-          </div>
+        <!-- dynamic price list per layanan -->
+        <div class="px-4 pt-3">
+          <div class="text-sm font-semibold text-pink-700">Daftar Harga</div>
+          <div id="priceList" class="mt-2 grid grid-cols-2 gap-3 text-sm"></div>
         </div>
 
         <!-- kalender: 7 hari ke depan -->
@@ -141,7 +137,9 @@
         </button>
       </div>
       <div class="p-4 text-sm">
-        <p class="mb-1"><span class="text-slate-500">Nama:</span> <span id="cName" class="font-medium"></span></p>
+        <label for="custName" class="text-xs text-slate-500">Nama Pemesan</label>
+        <input id="custName" class="mt-1 mb-3 w-full rounded-xl border border-pink-200 px-3 py-2 outline-none focus:ring-2 focus:ring-pink-300" placeholder="Masukkan nama Anda" />
+        <p class="mb-1"><span class="text-slate-500">Dilayani oleh:</span> <span id="cName" class="font-medium"></span></p>
         <p class="mb-1"><span class="text-slate-500">Layanan:</span> <span id="cService" class="font-medium"></span></p>
         <p class="mb-1"><span class="text-slate-500">Tanggal:</span> <span id="cDate" class="font-medium"></span></p>
         <p class="mb-1"><span class="text-slate-500">Jam:</span> <span id="cTime" class="font-medium"></span></p>
@@ -183,6 +181,63 @@
       {"id":"contact","name":"Kontak","href":"kontak.html"}
     ]
   }
+  </script>
+  <script>
+    // Override data from shared config.json and rebuild services + prices + nav
+    (async function(){
+      try {
+        const res = await fetch('./config.json', { cache: 'no-store' });
+        if(!res.ok) return;
+        const cfg = await res.json();
+
+        // Brand
+        document.getElementById('brand').textContent = cfg.salonName || 'Salon';
+
+        // Bottom nav
+        const bottomnav = document.getElementById('bottomnav');
+        if (bottomnav && Array.isArray(cfg.pages)){
+          const iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
+          bottomnav.innerHTML = '';
+          cfg.pages.forEach(p=>{
+            const isActive = location.pathname.endsWith(p.href);
+            const icon = iconMap[p.id] || '•';
+            bottomnav.appendChild(el(`<a href="${p.href}" class="flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ${isActive?'text-pink-600 font-semibold':'text-slate-600'}"><span class="text-lg">${icon}</span><span>${p.name}</span></a>`));
+          });
+        }
+
+        // Services + price
+        const servicesWrap = document.getElementById('services');
+        const priceWrap = document.getElementById('priceList');
+        function renderPricesFrom(list, serviceId){
+          if(!priceWrap) return; priceWrap.innerHTML = '';
+          const svc = list.find(x=>x.id===serviceId) || list[0];
+          const items = (svc && Array.isArray(svc.prices))? svc.prices : [];
+          if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500 col-span-2">Harga belum tersedia.</div>')); return; }
+          items.forEach(it=> priceWrap.appendChild(el(`<div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between"><span>${it.name}</span><span class="font-semibold text-pink-700">Rp ${(+it.price||0).toLocaleString('id-ID')}</span></div>`)) );
+        }
+        if (servicesWrap && Array.isArray(cfg.services)){
+          servicesWrap.innerHTML = '';
+          cfg.services.forEach((s,i)=>{
+            const node = el(`
+              <button data-id="${s.id}" class="group rounded-2xl bg-white border border-pink-100 p-4 text-center flex flex-col items-center justify-center gap-2 hover:border-pink-300">
+                <span class="text-2xl">${s.icon}</span>
+                <span class="text-xs font-medium">${s.name}</span>
+              </button>
+            `);
+            node.addEventListener('click', ()=>{
+              state.service = s.name; state.serviceId = s.id;
+              [...servicesWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
+              node.classList.add('ring-2','ring-pink-400');
+              renderPricesFrom(cfg.services, state.serviceId);
+              updateSummary();
+            });
+            if(i===0){ node.classList.add('ring-2','ring-pink-400'); state.service = s.name; state.serviceId = s.id; }
+            servicesWrap.appendChild(node);
+          });
+          renderPricesFrom(cfg.services, state.serviceId);
+        }
+      } catch(e) {}
+    })();
   </script>
 
   <script>
@@ -229,12 +284,28 @@
       `);
       node.addEventListener('click', ()=>{
         state.service = s.name;
+        state.serviceId = s.id;
         [...servicesWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
         node.classList.add('ring-2','ring-pink-400');
+        renderPriceList(state.serviceId);
         updateSummary();
       });
       servicesWrap.appendChild(node);
     });
+
+    // Render price list for selected service
+    const priceWrap = document.getElementById('priceList');
+    function formatIDR(n){ try { return 'Rp ' + (n||0).toLocaleString('id-ID'); } catch(e){ return 'Rp ' + n; } }
+    function renderPriceList(serviceId){
+      if(!priceWrap) return;
+      priceWrap.innerHTML = '';
+      const svc = (services||[]).find(x=>x.id===serviceId) || (services||[]).find(x=>x.name===state.service);
+      const items = (svc && Array.isArray(svc.prices)) ? svc.prices : [];
+      if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500 col-span-2">Harga belum tersedia.</div>')); return; }
+      items.forEach(it=>{
+        priceWrap.appendChild(el(`<div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between"><span class="text-xs text-pink-700">${it.name}</span><span class="font-semibold text-xs text-pink-700">${formatIDR(it.price)}</span></div>`));
+      });
+    }
 
     // Team
     const teamWrap = document.getElementById('team');
@@ -320,7 +391,11 @@
     document.getElementById('dlgConfirm').onclick = ()=>{
       dlg.close();
       const s = state;
+      const customer = (document.getElementById('custName')?.value || '').trim();
+      if(!customer){ alert('Mohon isi Nama Pemesan.'); return; }
+      try{ localStorage.setItem('custName', customer);}catch(e){}
       const msg = `Halo, saya ingin booking:\n\n` +
+        `Nama Pemesan: ${customer}\n` +
         `Layanan: ${s.service}\n` +
         `Stylist: ${s.stylist?.name || '-'}\n` +
         `Tanggal: ${s.date ? s.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-'}\n` +
@@ -333,16 +408,21 @@
       document.getElementById('cService').textContent = state.service ?? '-';
       document.getElementById('cDate').textContent = state.date ? state.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-';
       document.getElementById('cTime').textContent = state.time ?? '-';
+      try{
+        const saved = localStorage.getItem('custName');
+        if(saved) document.getElementById('custName').value = saved;
+      }catch(e){}
       dlg.showModal();
     };
 
     // Init defaults
     state.date = new Date();
     if (weekWrap && weekWrap.children[0]) weekWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-pink-600','border-pink-600','font-semibold');
+    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-white','text-pink-700','border-pink-600','font-semibold');
     state.time = timeSlots[0];
     if (servicesWrap && servicesWrap.children[0]) servicesWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (services[0]) state.service = services[0].name;
+    if (services[0]){ state.service = services[0].name; state.serviceId = services[0].id; }
+    renderPriceList(state.serviceId);
     if (team[0]){
       document.getElementById('profile-photo').src = team[0].photo;
       document.getElementById('profile-name').textContent = team[0].name;
