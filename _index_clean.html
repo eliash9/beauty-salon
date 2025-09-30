@@ -3,13 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Beauty Salon - Booking</title>
+  <title>Beauty Salon — Booking</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#e11d48">
-  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{ color-scheme: light;}
@@ -22,7 +19,7 @@
   </style>
 </head>
 <body class="bg-gradient-to-b from-rose-50 to-pink-100 text-slate-800 no-tap-highlight">
-  <!-- App Header (single) -->
+  <!-- App Header -->
   <header class="sticky top-0 z-30 bg-gradient-to-r from-rose-600 to-pink-600 text-white">
     <div class="max-w-md mx-auto px-4 py-3">
       <div class="flex items-center gap-3">
@@ -47,7 +44,9 @@
     <!-- Services -->
     <section class="px-4 mt-6">
       <h2 class="text-sm font-semibold text-pink-700">Layanan Kami</h2>
-      <div id="services" class="mt-3 grid grid-cols-3 gap-3"></div>
+      <div id="services" class="mt-3 grid grid-cols-3 gap-3">
+        <!-- item template is JS-populated -->
+      </div>
     </section>
 
     <!-- Banner -->
@@ -57,14 +56,16 @@
           <p class="text-sm font-semibold text-pink-700">Kunjungi Portofolio</p>
           <p class="text-xs text-slate-600">Lihat hasil makeover terbaru kami</p>
         </div>
-        <a href="portofolio.html" class="rounded-xl bg-pink-600 text-white text-sm font-medium px-4 py-2">Lihat</a>
+        <button class="rounded-xl bg-pink-600 text-white text-sm font-medium px-4 py-2">Lihat</button>
       </div>
     </section>
 
     <!-- Team -->
     <section class="px-4 mt-6">
       <h2 class="text-sm font-semibold text-pink-700">Tim Kami</h2>
-      <div id="team" class="mt-3 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2"></div>
+      <div id="team" class="mt-3 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2">
+        <!-- cards populated by JS -->
+      </div>
     </section>
 
     <!-- Specialist Detail + Calendar + Slots -->
@@ -106,7 +107,9 @@
         <!-- time slots -->
         <div class="px-4 py-4">
           <div class="text-sm font-semibold text-pink-700 mb-2">Pilih Jam</div>
-          <div id="slots" class="grid grid-cols-2 gap-2"></div>
+          <div id="slots" class="grid grid-cols-2 gap-2">
+            <!-- populated by JS -->
+          </div>
         </div>
       </div>
     </section>
@@ -128,7 +131,9 @@
 
   <!-- Mobile Bottom Nav -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-pink-100 safe-bottom">
-    <div id="bottomnav" class="max-w-md mx-auto flex items-stretch justify-around py-2 px-2 text-xs"></div>
+    <div id="bottomnav" class="max-w-md mx-auto flex items-stretch justify-around py-2 px-2 text-xs">
+      <!-- populated by JS -->
+    </div>
   </nav>
 
   <!-- Modal -->
@@ -152,7 +157,6 @@
     </div>
   </dialog>
 
-  <!-- Config JSON -->
   <script id="app-config" type="application/json">
   {
     "salonName": "Beauty Salon",
@@ -184,38 +188,70 @@
     ]
   }
   </script>
-
   <script>
-    // Register Service Worker (relative paths so it works on domain, subdomain, or subfolder)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(()=>{});
-      });
-    }
+    // --- Fake data (bisa diganti dari API) ---
+    let services = [
+      { id:'style',   name:'Hair Style',  icon:'💇‍♀️' },
+      { id:'facial',  name:'Facial',      icon:'🧖‍♀️' },
+      { id:'makeup',  name:'Make Up',     icon:'💄' },
+      { id:'care',    name:'Hair Care',   icon:'🧴' },
+      { id:'color',   name:'Coloring',    icon:'🎨' },
+      { id:'spa',     name:'SPA',         icon:'🛀' }
+    ];
 
-    // Read config
-    let CONFIG = {};
-    try { CONFIG = JSON.parse(document.getElementById('app-config').textContent || '{}'); } catch(e) { CONFIG = {}; }
-    const services = CONFIG.services || [];
-    const team = CONFIG.team || [];
-    const timeSlots = CONFIG.timeSlots || ["09:00","10:30","11:40","12:00","13:30","14:30","16:00","17:30"];
-    const OWNER_WHATSAPP = CONFIG.ownerWhatsApp || '6281234567890';
+    let team = [
+      { id:1, name:'Janet Jones', role:'Hair Specialist', rating:4.5,
+        photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop' },
+      { id:2, name:'Amelia Reed', role:'Makeup Artist', rating:4.7,
+        photo:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop' },
+      { id:3, name:'Mina Clark', role:'Facialist', rating:4.6,
+        photo:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop' },
+    ];
 
-    // State
-    const state = { service:null, stylist: team[0] || null, date:null, time:null };
+    let timeSlots = ['09:00 AM','10:30 AM','11:40 AM','12:00 PM','13:30 PM','14:30 PM','16:00 PM','17:30 PM'];
 
-    // Helper
+    // Override with CONFIG JSON
+    try {
+      const cfg = JSON.parse(document.getElementById('app-config')?.textContent || '{}');
+      if (Array.isArray(cfg.services)) services = cfg.services;
+      if (Array.isArray(cfg.team)) team = cfg.team;
+      if (Array.isArray(cfg.timeSlots)) timeSlots = cfg.timeSlots;
+      window.OWNER_WHATSAPP = cfg.ownerWhatsApp || '6281234567890';
+      window.APP_PAGES = Array.isArray(cfg.pages) ? cfg.pages : [];
+      window.APP_BRAND = cfg.salonName || 'Salon';
+    } catch(e){ window.APP_PAGES = []; window.APP_BRAND = 'Salon'; }
+
+    // --- State ---
+    const state = {
+      service: null,
+      stylist: team[0] || null,
+      date: null,
+      time: null,
+    };
+
+    // --- UI builders ---
     function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
 
-    // Bottom nav only
-    document.getElementById('brand').textContent = CONFIG.salonName || 'Salon';
+    // Build top navigation and bottom mobile nav
+    document.getElementById('brand').textContent = window.APP_BRAND || 'Salon';
+    const topnav = document.getElementById('topnav');
     const bottomnav = document.getElementById('bottomnav');
     const iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-    (CONFIG.pages||[]).forEach(p=>{
-      const isActive = location.pathname.endsWith(p.href);
-      const icon = iconMap[p.id] || '•';
-      const btn = el(`<a href="${p.href}" class="flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ${isActive?'text-pink-600 font-semibold':'text-slate-600'}"><span class="text-lg">${icon}</span><span>${p.name}</span></a>`);
-      bottomnav.appendChild(btn);
+    (window.APP_PAGES || []).forEach(p => {
+      if (topnav) {
+        const a = el(`<a href="${p.href}" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20">${p.name}</a>`);
+        if (location.pathname.endsWith(p.href)) a.classList.add('ring-2','ring-white/70');
+        topnav.appendChild(a);
+      }
+      if (bottomnav) {
+        const isActive = location.pathname.endsWith(p.href);
+        const icon = iconMap[p.id] || '•';
+        const btn = el(`<a href="${p.href}" class="flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ${isActive?'text-pink-600 font-semibold':'text-slate-600'}">
+            <span class="text-lg">${icon}</span>
+            <span>${p.name}</span>
+        </a>`);
+        bottomnav.appendChild(btn);
+      }
     });
 
     // Services
@@ -255,7 +291,6 @@
         state.stylist = m;
         document.getElementById('profile-photo').src = m.photo;
         document.getElementById('profile-name').textContent = m.name;
-        document.getElementById('profile-role').textContent = m.role || '';
         [...teamWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
         card.classList.add('ring-2','ring-pink-400');
         updateSummary();
@@ -293,8 +328,8 @@
       const btn = el(`<button class="rounded-2xl border border-pink-200 bg-white px-4 py-3 text-sm text-pink-700 hover:border-pink-400">${t}</button>`);
       btn.addEventListener('click', ()=>{
         state.time = t;
-        [...slotsWrap.children].forEach(c=>c.classList.remove('bg-pink-700','text-white','border-pink-600','font-semibold'));
-        btn.classList.add('bg-pink-700','text-white','border-pink-600','font-semibold');
+        [...slotsWrap.children].forEach(c=>c.classList.remove('bg-pink-600','text-white','border-pink-600','font-semibold'));
+        btn.classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
         updateSummary();
       });
       slotsWrap.appendChild(btn);
@@ -307,48 +342,10 @@
       const s = state;
       const parts = [];
       if(s.service) parts.push(s.service);
-      if(s.stylist) parts.push(`dengan ${s.stylist.name}`);
+      if(s.stylist) parts.push( `dengan ${s.stylist.name}`); 
       if(s.date) parts.push(s.date.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'short'}));
       if(s.time) parts.push(s.time);
-      btnBook.disabled = !(s.service && s.stylist && s.date && s.time);
+      btnBook.disabled =  !(s.service && s.stylist && s.date && s.time); 
       summary.textContent = parts.length? parts.join(' • ') : 'Belum ada pilihan.';
     }
-
-    // Modal handlers
-    const dlg = document.getElementById('dlg');
-    document.getElementById('dlgClose').onclick = ()=> dlg.close();
-    document.getElementById('dlgConfirm').onclick = ()=>{
-      dlg.close();
-      const s = state;
-      const msg = `Halo, saya ingin booking:\n\n` +
-        `Layanan: ${s.service}\n` +
-        `Stylist: ${s.stylist?.name || '-'}\n` +
-        `Tanggal: ${s.date ? s.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-'}\n` +
-        `Jam: ${s.time || '-'}\n`;
-      const url = `https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    };
-    btnBook.onclick = ()=>{
-      document.getElementById('cName').textContent = state.stylist?.name ?? '-';
-      document.getElementById('cService').textContent = state.service ?? '-';
-      document.getElementById('cDate').textContent = state.date ? state.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-';
-      document.getElementById('cTime').textContent = state.time ?? '-';
-      dlg.showModal();
-    };
-
-    // Init defaults
-    state.date = new Date();
-    if (weekWrap && weekWrap.children[0]) weekWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
-    state.time = timeSlots[0];
-    if (servicesWrap && servicesWrap.children[0]) servicesWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (services[0]) state.service = services[0].name;
-    if (team[0]){
-      document.getElementById('profile-photo').src = team[0].photo;
-      document.getElementById('profile-name').textContent = team[0].name;
-      document.getElementById('profile-role').textContent = team[0].role || '';
-    }
-    updateSummary();
-  </script>
-</body>
-</html>
+<html lang="id">
