@@ -240,7 +240,7 @@
     const teamWrap = document.getElementById('team');
     team.forEach((m,i)=>{
       const card = el(`
-        <button class="snap-start min-w-[220px] card bg-white rounded-2xl text-left overflow-hidden">
+        <button class="snap-start min-w-[220px] card bg-white rounded-2xl text-left overflow-hidden mt-3">
           <div class="flex items-center gap-3 p-3">
             <img class="h-12 w-12 rounded-full object-cover" src="${m.photo}" alt="${m.name}">
             <div class="flex-1">
@@ -293,8 +293,8 @@
       const btn = el(`<button class="rounded-2xl border border-pink-200 bg-white px-4 py-3 text-sm text-pink-700 hover:border-pink-400">${t}</button>`);
       btn.addEventListener('click', ()=>{
         state.time = t;
-        [...slotsWrap.children].forEach(c=>c.classList.remove('bg-pink-700','text-white','border-pink-600','font-semibold'));
-        btn.classList.add('bg-pink-700','text-white','border-pink-600','font-semibold');
+        [...slotsWrap.children].forEach(c=>c.classList.remove('border-pink-600','font-semibold'));
+        btn.classList.add('border-pink-600','font-semibold');
         updateSummary();
       });
       slotsWrap.appendChild(btn);
@@ -339,7 +339,7 @@
     // Init defaults
     state.date = new Date();
     if (weekWrap && weekWrap.children[0]) weekWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
+    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-pink-600','border-pink-600','font-semibold');
     state.time = timeSlots[0];
     if (servicesWrap && servicesWrap.children[0]) servicesWrap.children[0].classList.add('ring-2','ring-pink-400');
     if (services[0]) state.service = services[0].name;
