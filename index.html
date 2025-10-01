@@ -31,17 +31,35 @@
 
   <main id="app" class="max-w-md mx-auto pb-36 safe-bottom">
     <div class="px-4 mt-4">
+      <!--
       <label class="sr-only" for="q">Cari</label>
       <div class="relative">
         <input id="q" class="w-full rounded-2xl bg-white border border-pink-100 py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-pink-300" placeholder="Cari layanan / stylist..." />
         <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
       </div>
+    -->
+      <!-- Hero banner -->
+      <div class="mt-4 relative overflow-hidden rounded-3xl card">
+        <img id="heroImg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200&auto=format&fit=crop" alt="Hero" class="w-full h-40 object-cover sm:h-56" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-r from-rose-600/80 to-pink-600/50"></div>
+        <div class="absolute inset-0 p-5 flex flex-col justify-end text-white">
+          <h2 id="heroTitle" class="text-lg sm:text-xl font-bold leading-snug">Rawat Dirimu dengan Sentuhan Profesional</h2>
+          <p id="heroSubtitle" class="text-xs sm:text-sm text-white/90 mt-1">Perawatan rambut, wajah, dan make up oleh tim berpengalaman.</p>
+          <div class="mt-3 flex gap-2">
+            <button id="ctaWaHero2" class="rounded-2xl bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 text-sm">WhatsApp</button>
+            <a href="#slots" class="rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold px-4 py-2 text-sm">Online</a>
+          </div>
+        </div>
+      </div>
+      
     </div>
 
     <section class="px-4 mt-6">
       <h2 class="text-sm font-semibold text-pink-700">Layanan Kami</h2>
       <div id="services" class="mt-3 grid grid-cols-3 gap-3"></div>
     </section>
+
+   
 
     <section class="px-4 mt-6">
       <div class="card rounded-2xl bg-gradient-to-r from-pink-100 to-pink-50 p-4 flex items-center gap-4">
@@ -95,6 +113,10 @@
           </div>
         </div>
       </div>
+    </section>
+     <section class="px-4 mt-6">
+      <h2 class="text-sm font-semibold text-pink-700">Cara Booking Online</h2>
+      <div id="bookSteps" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
     </section>
   </main>
 
@@ -150,6 +172,57 @@
       applyBrand('brand');
       renderBottomNav('bottomnav');
       APP.injectSchema();
+      // Bind hero CTA (WhatsApp)
+      const waBtn = document.getElementById('ctaWaHero');
+      if (waBtn){
+        waBtn.onclick = ()=>{
+          const num = (APP.cfg&&APP.cfg.ownerWhatsApp)||'';
+          const url = `https://wa.me/${num}`;
+          window.open(url,'_blank');
+        };
+      }
+      const waBtn2 = document.getElementById('ctaWaHero2');
+      if (waBtn2){
+        waBtn2.onclick = ()=>{
+          const num = (APP.cfg&&APP.cfg.ownerWhatsApp)||'';
+          const url = `https://wa.me/${num}`;
+          window.open(url,'_blank');
+        };
+      }
+      // Booking Online CTA scrolls to slots
+      const onlineA = document.getElementById('ctaOnlineHero');
+      if (onlineA){ onlineA.addEventListener('click', (e)=>{ const el=document.getElementById('slots'); if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'});} }); }
+
+      // Apply hero from config
+      const h = (APP.cfg && APP.cfg.hero) || {};
+      const hImg = document.getElementById('heroImg'); if (hImg && h.image) hImg.src = h.image;
+      const hTitle = document.getElementById('heroTitle'); if (hTitle && (h.title||APP.cfg.salonName)) hTitle.textContent = h.title || `Selamat datang di ${APP.cfg.salonName||'Salon'}`;
+      const hSub = document.getElementById('heroSubtitle'); if (hSub && h.subtitle) hSub.textContent = h.subtitle;
+
+      // Render booking steps
+      const stepsWrap = document.getElementById('bookSteps');
+      if (stepsWrap){
+        const steps = Array.isArray(APP.cfg.bookingGuide)? APP.cfg.bookingGuide : [];
+        const items = steps.length? steps : [
+          {title:'Pilih Layanan', desc:'Lihat layanan dan harga'},
+          {title:'Pilih Stylist & Tanggal', desc:'Pilih stylist, tanggal, dan jam'},
+          {title:'Isi Nama', desc:'Isi nama pemesan untuk konfirmasi'},
+          {title:'Kirim WA', desc:'Kirim pesanan via WhatsApp'}
+        ];
+        stepsWrap.innerHTML = '';
+        items.forEach((s,i)=>{
+          const node = el(`
+            <div class="card bg-white rounded-2xl p-4 flex items-start gap-3">
+              <div class="h-8 w-8 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center font-bold">${i+1}</div>
+              <div>
+                <div class="text-sm font-semibold">${s.title||''}</div>
+                <div class="text-xs text-slate-600 mt-0.5">${s.desc||''}</div>
+              </div>
+            </div>
+          `);
+          stepsWrap.appendChild(node);
+        });
+      }
 
       const state = { service:null, serviceId:null, stylist:(APP.cfg.team||[])[0]||null, date:null, time:null };
       const summary = document.getElementById('summary');
@@ -185,7 +258,7 @@
             if (booked){
               cls += 'bg-slate-100 border-slate-300 text-slate-500 opacity-70 cursor-not-allowed pointer-events-none line-through';
             } else if (pending){
-              cls += 'bg-amber-50 border-amber-300 text-amber-800';
+              cls += 'bg-amber-50 border-amber-300 text-amber-800 opacity-80 cursor-not-allowed pointer-events-none';
             } else {
               cls += 'bg-white border-pink-200 text-pink-700 hover:border-pink-400';
             }
@@ -194,13 +267,27 @@
             else if (pending) badge = ' <span class="ml-2 text-[10px] uppercase tracking-wide bg-amber-100 text-amber-800 px-1.5 py-[1px] rounded">Hold</span>';
 
             const title = booked ? 'Slot sudah terisi' : (pending ? 'Slot dalam proses' : 'Pilih jam ini');
-            const btn = el(`<button class="${cls}" ${booked?'disabled':''} title="${title}">${t}${badge}</button>`);
+            const statusAttr = booked ? 'booked' : (pending ? 'pending' : 'available');
+            const btn = el(`<button data-status="${statusAttr}" data-time="${t}" class="${cls}" ${booked?'disabled':''} title="${title}">${t}${badge}</button>`);
             if(!booked && !pending){
               btn.addEventListener('click', ()=>{
                 state.time = t;
-                ;[].forEach.call(wrap.children, c=>c.classList.remove('bg-pink-600','text-white','border-pink-600','font-semibold'));
-                // normalize base classes so selected state is consistent
-                btn.classList.remove('bg-white','border-pink-200','text-pink-700','hover:border-pink-400','bg-amber-50','border-amber-300','text-amber-800');
+                ;[].forEach.call(wrap.children, c=>{
+                  // remove selected styles
+                  c.classList.remove('bg-pink-600','text-white','border-pink-600','font-semibold');
+                  // reset base styles by status
+                  c.classList.remove('bg-white','border-pink-200','text-pink-700','hover:border-pink-400','bg-amber-50','border-amber-300','text-amber-800','bg-slate-100','border-slate-300','text-slate-500','opacity-70','opacity-80','cursor-not-allowed','pointer-events-none','line-through');
+                  const sstat = c.dataset && c.dataset.status;
+                  if (sstat === 'available'){
+                    c.classList.add('bg-white','border-pink-200','text-pink-700','hover:border-pink-400');
+                  } else if (sstat === 'pending'){
+                    c.classList.add('bg-amber-50','border-amber-300','text-amber-800','opacity-80','cursor-not-allowed','pointer-events-none');
+                  } else if (sstat === 'booked'){
+                    c.classList.add('bg-slate-100','border-slate-300','text-slate-500','opacity-70','cursor-not-allowed','pointer-events-none','line-through');
+                  }
+                });
+                // apply selected style for clicked
+                btn.classList.remove('bg-white','border-pink-200','text-pink-700','hover:border-pink-400');
                 btn.classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
                 updateSummary();
               });
@@ -329,6 +416,7 @@
   </script>
 </body>
 </html>
+
 
 
 

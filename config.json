@@ -1,22 +1,22 @@
 {
   "salonName": "Icho Beauty Salon",
   "ownerWhatsApp": "6281299911455",
-  "address": "Jl. Contoh No. 123, Jakarta",
-  "mapEmbedUrl": "",
+  "address": "Jeruklegi, Kec. BalongBendo, Kabupaten Sidoarjo, Jawa Timur 61253",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4868.427096976245!2d112.55217239999999!3d-7.4027514000000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78091ecdc28aa3%3A0xe99ef8b7bb63c694!2sICHO%20beauty%20SALON!5e1!3m2!1sid!2sid!4v1759310788325!5m2!1sid!2sid",
   "url": "",
   "telephone": "",
   "openingHours": [
-    "Mo-Fr 09:00-18:00",
-    "Sa 09:00-16:00"
+    "Mo-Fr 08:00-21:00",
+    "Sa 08:00-16:00"
   ],
   "addressFields": {
     "streetAddress": "Jl. Contoh No. 123",
     "addressLocality": "Jakarta",
     "addressRegion": "DKI Jakarta",
-    "postalCode": "10430",
+    "postalCode": "61253",
     "addressCountry": "ID"
   },
-  "geo": { "lat": -6.2, "lng": 106.8 },
+  "geo": { "lat": -7.402469243722692, "lng": 112.55284882298122 },
   "sameAs": [],
   "bookingEndpoint": "https://script.google.com/macros/s/AKfycbx2xYtVX2rioXSaheTJuU3n9lCehGenx1jO77JCkSKjVZjfuTeoKanAwR7q3SFh1L2a/exec",
   "services": [
@@ -47,7 +47,7 @@
     ]}
   ],
   "team": [
-    { "id": 1, "name": "Janet Jones", "role": "Spesialis Rambut", "rating": 4.5,
+    { "id": 1, "name": "Icho Adek", "role": "Spesialis Rambut", "rating": 4.5,
       "photo": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" },
     { "id": 2, "name": "Amelia Reed", "role": "Penata Rias", "rating": 4.7,
       "photo": "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop" },
@@ -60,7 +60,20 @@
     {"id":"services","name":"Layanan","href":"layanan.html"},
     {"id":"team","name":"Tim","href":"tim.html"},
     {"id":"portfolio","name":"Portofolio","href":"portofolio.html"},
+    
     {"id":"about","name":"Tentang","href":"tentang.html"},
     {"id":"contact","name":"Kontak","href":"kontak.html"}
+  ],
+  "hero": {
+    "title": "Rawat Dirimu dengan Sentuhan Profesional",
+    "subtitle": "Perawatan rambut, wajah, dan make up oleh tim berpengalaman.",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200&auto=format&fit=crop"
+  },
+  "bookingGuide": [
+    { "title": "Pilih Layanan", "desc": "Lihat layanan dan daftar harga." },
+    { "title": "Pilih Stylist & Tanggal", "desc": "Tentukan stylist, tanggal, dan jam." },
+    { "title": "Isi Nama", "desc": "Isi nama pemesan untuk konfirmasi." },
+    { "title": "Konfirmasi", "desc": "Periksa ringkasan pilihan Anda." },
+    { "title": "Kirim WA", "desc": "Kirim pesanan via WhatsApp." }
   ]
 }

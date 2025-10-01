@@ -11,6 +11,7 @@ window.APP = window.APP || (function(){
     },
     _fmtYMD(d){ try{ return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-'); }catch(e){ return ''; } },
     async getSlots({ date, stylistId, serviceId }){
+      
       try{
         const cfg = this.cfg || {};
         const ymd = this._fmtYMD(date instanceof Date ? date : new Date(date));
