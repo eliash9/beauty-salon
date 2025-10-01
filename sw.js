@@ -3,8 +3,16 @@ const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icons/icon.svg',
-  './icons/maskable.svg'
+  './icons/icon-48x48.png',
+  './icons/icon-72x72.png',
+  './icons/icon-96x96.png',
+  './icons/icon-144x144.png',
+  './icons/icon-192x192.png',
+  './icons/icon-256x256.png',
+  './icons/icon-384x384.png',
+  './icons/icon-512x512.png',
+  'https://cdn.tailwindcss.com',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
 ];
 
 self.addEventListener('install', (event) => {
