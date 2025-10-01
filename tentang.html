@@ -23,7 +23,6 @@
       <div class="flex items-center gap-3">
         <h1 id="brand" class="font-semibold text-lg tracking-wide">Beauty Salon</h1>
       </div>
-      
     </div>
   </header>
   <main class="max-w-3xl mx-auto p-4 pb-24">
@@ -39,78 +38,40 @@
       </div>
       <div class="card bg-white rounded-2xl overflow-hidden">
         <div class="aspect-video">
-          <iframe id="mapFrame" class="w-full h-full" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps?q=Salon%20Kecantikan&output=embed" allowfullscreen></iframe>
+          <iframe id="mapFrame" class="w-full h-full" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Salon%20Kecantikan&output=embed" allowfullscreen></iframe>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Mobile Bottom Nav -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-pink-100 safe-bottom">
     <div id="bottomnav" class="max-w-md mx-auto flex items-stretch justify-around py-2 px-2 text-xs"></div>
   </nav>
 
-  <script id="app-config" type="application/json">
-  {
-    "salonName": "Beauty Salon",
-    "ownerWhatsApp": "6281234567890",
-    "address": "Jl. Contoh No. 123, Jakarta",
-    "mapEmbedUrl": "",
-    "pages": [
-      {"id":"home","name":"Beranda","href":"index.html"},
-      {"id":"services","name":"Layanan","href":"layanan.html"},
-      {"id":"team","name":"Tim","href":"tim.html"},
-      {"id":"portfolio","name":"Portofolio","href":"portofolio.html"},
-      {"id":"about","name":"Tentang","href":"tentang.html"},
-      {"id":"contact","name":"Kontak","href":"kontak.html"}
-    ]
-  }
-  </script>
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
   <script>
-    // Register Service Worker (relative scope)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(()=>{});
       });
     }
-    (function(){
-      var bot = document.getElementById('bottomnav');
-      if(!bot) return;
-      var cfg = JSON.parse(document.getElementById('app-config').textContent || '{}');
-      var iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-      (cfg.pages||[]).forEach(function(p){
-        var a = document.createElement('a');
-        a.href = p.href;
-        a.className = 'flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ' + (location.pathname.endsWith(p.href)?'text-pink-600 font-semibold':'text-slate-600');
-        a.innerHTML = '<span class="text-lg">'+(iconMap[p.id]||'•')+'</span><span>'+p.name+'</span>';
-        bot.appendChild(a);
-      });
+    (async function(){
+      await APP.load();
+      applyBrand('brand');
+      renderBottomNav('bottomnav');
+      APP.injectSchema();
+      const cfg = APP.cfg || {};
+      const addr = cfg.address || '';
+      const holder = document.getElementById('addressText');
+      if (holder) holder.textContent = addr || 'Alamat belum diset.';
+      const iframe = document.getElementById('mapFrame');
+      if (iframe) {
+        let src = cfg.mapEmbedUrl && cfg.mapEmbedUrl.trim();
+        if (!src && addr) src = `https://www.google.com/maps?q=${encodeURIComponent(addr)}&output=embed`;
+        if (src) iframe.src = src;
+      }
     })();
-  </script>
-  <script>
-    function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
-    const cfg = JSON.parse(document.getElementById('app-config').textContent);
-    document.getElementById('brand').textContent = cfg.salonName || 'Salon';
-    const nav = document.getElementById('topnav');
-    if (nav) {
-      cfg.pages.forEach(p=>{
-        const a = el(`<a href="${p.href}" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20">${p.name}</a>`);
-        if (location.pathname.endsWith(p.href)) a.classList.add('ring-2','ring-white/70');
-        nav.appendChild(a);
-      });
-    }
-
-    // Address + Map
-    const addr = cfg.address || '';
-    const holder = document.getElementById('addressText');
-    if (holder) holder.textContent = addr || 'Alamat belum diset.';
-    const iframe = document.getElementById('mapFrame');
-    if (iframe) {
-      let src = cfg.mapEmbedUrl && cfg.mapEmbedUrl.trim();
-      if (!src && addr) src = `https://www.google.com/maps?q=${encodeURIComponent(addr)}&output=embed`;
-      if (src) iframe.src = src;
-    }
   </script>
 </body>
 </html>

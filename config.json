@@ -1,31 +1,47 @@
 {
-  "salonName": "Beauty Salon",
-  "ownerWhatsApp": "6281234567890",
+  "salonName": "Icho Beauty Salon",
+  "ownerWhatsApp": "6281299911455",
   "address": "Jl. Contoh No. 123, Jakarta",
   "mapEmbedUrl": "",
+  "url": "",
+  "telephone": "",
+  "openingHours": [
+    "Mo-Fr 09:00-18:00",
+    "Sa 09:00-16:00"
+  ],
+  "addressFields": {
+    "streetAddress": "Jl. Contoh No. 123",
+    "addressLocality": "Jakarta",
+    "addressRegion": "DKI Jakarta",
+    "postalCode": "10430",
+    "addressCountry": "ID"
+  },
+  "geo": { "lat": -6.2, "lng": 106.8 },
+  "sameAs": [],
+  "bookingEndpoint": "https://script.google.com/macros/s/AKfycbx2xYtVX2rioXSaheTJuU3n9lCehGenx1jO77JCkSKjVZjfuTeoKanAwR7q3SFh1L2a/exec",
   "services": [
-    { "id": "style", "name": "Gaya Rambut", "icon": "💇‍♀️", "prices": [
+    { "id": "style",  "name": "Potong Rambut", "icon": "&#128135;", "prices": [
       { "name": "Cuci & Blow", "price": 80000 },
       { "name": "Potong Rambut", "price": 120000 },
       { "name": "Hair Styling", "price": 180000 }
     ]},
-    { "id": "facial", "name": "Facial", "icon": "🧖‍♀️", "prices": [
+    { "id": "facial", "name": "Facial",      "icon": "&#129494;", "prices": [
       { "name": "Basic Facial", "price": 150000 },
       { "name": "Deep Cleansing", "price": 220000 }
     ]},
-    { "id": "makeup", "name": "Make Up", "icon": "💄", "prices": [
+    { "id": "makeup", "name": "Make Up",     "icon": "&#128132;", "prices": [
       { "name": "Daily Makeup", "price": 250000 },
       { "name": "Party Makeup", "price": 400000 }
     ]},
-    { "id": "care", "name": "Perawatan", "icon": "🧴", "prices": [
+    { "id": "care",   "name": "Perawatan",   "icon": "&#129524;", "prices": [
       { "name": "Hair Mask", "price": 170000 },
       { "name": "Hair Spa", "price": 220000 }
     ]},
-    { "id": "color", "name": "Pewarnaan", "icon": "🎨", "prices": [
+    { "id": "color",  "name": "Pewarnaan",   "icon": "&#127912;", "prices": [
       { "name": "Highlight", "price": 350000 },
       { "name": "Full Color", "price": 500000 }
     ]},
-    { "id": "spa", "name": "Spa", "icon": "💆‍♀️", "prices": [
+    { "id": "spa",    "name": "Spa",         "icon": "&#128704;", "prices": [
       { "name": "Body Scrub", "price": 180000 },
       { "name": "Body Spa", "price": 300000 }
     ]}
@@ -48,4 +64,3 @@
     {"id":"contact","name":"Kontak","href":"kontak.html"}
   ]
 }
-

@@ -14,15 +14,12 @@
   <style>
     :root{ color-scheme: light;}
     body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    /* iOS safe area padding for sticky footer */
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
     .no-tap-highlight{-webkit-tap-highlight-color: rgba(0,0,0,0);}
-    /* simple card shadow */
     .card{ box-shadow: 0 8px 24px rgba(0,0,0,.06); }
   </style>
 </head>
 <body class="bg-gradient-to-b from-rose-50 to-pink-100 text-slate-800 no-tap-highlight">
-  <!-- App Header (single) -->
   <header class="sticky top-0 z-30 bg-gradient-to-r from-rose-600 to-pink-600 text-white">
     <div class="max-w-md mx-auto px-4 py-3">
       <div class="flex items-center gap-3">
@@ -32,25 +29,19 @@
   </header>
 
   <main id="app" class="max-w-md mx-auto pb-36 safe-bottom">
-    <!-- Search -->
     <div class="px-4 mt-4">
       <label class="sr-only" for="q">Cari</label>
       <div class="relative">
-        <input id="q" class="w-full rounded-2xl bg-white border border-pink-100 py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-pink-300"
-               placeholder="Cari layanan / stylist..." />
-        <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
-        </svg>
+        <input id="q" class="w-full rounded-2xl bg-white border border-pink-100 py-3 pl-11 pr-4 outline-none focus:ring-2 focus:ring-pink-300" placeholder="Cari layanan / stylist..." />
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-pink-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
       </div>
     </div>
 
-    <!-- Services -->
     <section class="px-4 mt-6">
       <h2 class="text-sm font-semibold text-pink-700">Layanan Kami</h2>
       <div id="services" class="mt-3 grid grid-cols-3 gap-3"></div>
     </section>
 
-    <!-- Banner -->
     <section class="px-4 mt-6">
       <div class="card rounded-2xl bg-gradient-to-r from-pink-100 to-pink-50 p-4 flex items-center gap-4">
         <div class="flex-1">
@@ -61,19 +52,15 @@
       </div>
     </section>
 
-    <!-- Team -->
     <section class="px-4 mt-6">
       <h2 class="text-sm font-semibold text-pink-700">Tim Kami</h2>
       <div id="team" class="mt-3 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2"></div>
     </section>
 
-    <!-- Specialist Detail + Calendar + Slots -->
     <section class="px-4 mt-6">
       <div class="card rounded-3xl bg-white">
-        <!-- header -->
         <div class="p-4 border-b border-pink-100 flex items-center gap-3">
-          <img id="profile-photo" alt="" class="h-14 w-14 rounded-full object-cover"
-               src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" />
+          <img id="profile-photo" loading="lazy" alt="" class="h-14 w-14 rounded-full object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" />
           <div class="flex-1">
             <div class="flex items-center gap-1 text-pink-600">
               <span class="font-semibold">4.5</span>
@@ -87,47 +74,44 @@
           </button>
         </div>
 
-        <!-- dynamic price list per layanan -->
         <div class="px-4 pt-3">
           <div class="text-sm font-semibold text-pink-700">Daftar Harga</div>
           <div id="priceList" class="mt-2 grid grid-cols-2 gap-3 text-sm"></div>
         </div>
 
-        <!-- kalender: 7 hari ke depan -->
         <div class="px-4 mt-4">
           <div class="text-sm font-semibold text-pink-700">7 Hari Ke Depan</div>
           <div id="week" class="mt-2 grid grid-cols-7 gap-1 text-center"></div>
         </div>
 
-        <!-- time slots -->
         <div class="px-4 py-4">
           <div class="text-sm font-semibold text-pink-700 mb-2">Pilih Jam</div>
           <div id="slots" class="grid grid-cols-2 gap-2"></div>
+          <div id="slotLegend" class="mt-2 flex items-center gap-4 text-xs text-slate-600">
+            <span class="inline-flex items-center gap-1"><span class="inline-block h-3 w-3 rounded bg-white border border-pink-200"></span> Tersedia</span>
+            <span class="inline-flex items-center gap-1"><span class="inline-block h-3 w-3 rounded bg-amber-50 border border-amber-200"></span> Hold</span>
+            <span class="inline-flex items-center gap-1"><span class="inline-block h-3 w-3 rounded bg-slate-100 border border-slate-200"></span> Booked</span>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Sticky Book bar -->
   <div class="fixed bottom-16 left-0 right-0 z-40">
     <div class="max-w-md mx-auto px-4 pb-4 pt-3 bg-white/90 backdrop-blur border-t border-pink-100 safe-bottom">
       <div class="flex items-center gap-3">
         <div class="flex-1">
           <p id="summary" class="text-xs text-slate-600">Belum ada pilihan.</p>
         </div>
-        <button id="btnBook" class="rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-semibold text-sm px-5 py-3 disabled:opacity-50" disabled>
-          Booking
-        </button>
+        <button id="btnBook" class="rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-semibold text-sm px-5 py-3 disabled:opacity-50" disabled>Booking</button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile Bottom Nav -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-pink-100 safe-bottom">
     <div id="bottomnav" class="max-w-md mx-auto flex items-stretch justify-around py-2 px-2 text-xs"></div>
   </nav>
 
-  <!-- Modal -->
   <dialog id="dlg" class="rounded-2xl p-0 border-0 w-[92%] max-w-md">
     <div class="card rounded-2xl bg-white">
       <div class="p-4 border-b border-pink-100 flex items-center justify-between">
@@ -150,285 +134,200 @@
     </div>
   </dialog>
 
-  <!-- Config JSON -->
-  <script id="app-config" type="application/json">
-  {
-    "salonName": "Beauty Salon",
-    "ownerWhatsApp": "6281234567890",
-    "services": [
-      { "id":"style",  "name":"Gaya Rambut",  "icon":"💇‍♀️" },
-      { "id":"facial", "name":"Facial",       "icon":"🧖‍♀️" },
-      { "id":"makeup", "name":"Make Up",      "icon":"💄" },
-      { "id":"care",   "name":"Perawatan",    "icon":"🧴" },
-      { "id":"color",  "name":"Pewarnaan",    "icon":"🎨" },
-      { "id":"spa",    "name":"Spa",          "icon":"💆‍♀️" }
-    ],
-    "team": [
-      { "id":1, "name":"Janet Jones",  "role":"Spesialis Rambut", "rating":4.5,
-        "photo":"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" },
-      { "id":2, "name":"Amelia Reed",  "role":"Penata Rias",      "rating":4.7,
-        "photo":"https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop" },
-      { "id":3, "name":"Mina Clark",   "role":"Terapis Wajah",    "rating":4.6,
-        "photo":"https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop" }
-    ],
-    "timeSlots": ["09:00", "10:30", "11:40", "12:00", "13:30", "14:30", "16:00", "17:30"],
-    "pages": [
-      {"id":"home","name":"Beranda","href":"index.html"},
-      {"id":"services","name":"Layanan","href":"layanan.html"},
-      {"id":"team","name":"Tim","href":"tim.html"},
-      {"id":"portfolio","name":"Portofolio","href":"portofolio.html"},
-      {"id":"about","name":"Tentang","href":"tentang.html"},
-      {"id":"contact","name":"Kontak","href":"kontak.html"}
-    ]
-  }
-  </script>
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script src="services.js"></script>
   <script>
-    // Override data from shared config.json and rebuild services + prices + nav
-    (async function(){
-      try {
-        const res = await fetch('./config.json', { cache: 'no-store' });
-        if(!res.ok) return;
-        const cfg = await res.json();
-
-        // Brand
-        document.getElementById('brand').textContent = cfg.salonName || 'Salon';
-
-        // Bottom nav
-        const bottomnav = document.getElementById('bottomnav');
-        if (bottomnav && Array.isArray(cfg.pages)){
-          const iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-          bottomnav.innerHTML = '';
-          cfg.pages.forEach(p=>{
-            const isActive = location.pathname.endsWith(p.href);
-            const icon = iconMap[p.id] || '•';
-            bottomnav.appendChild(el(`<a href="${p.href}" class="flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ${isActive?'text-pink-600 font-semibold':'text-slate-600'}"><span class="text-lg">${icon}</span><span>${p.name}</span></a>`));
-          });
-        }
-
-        // Services + price
-        const servicesWrap = document.getElementById('services');
-        const priceWrap = document.getElementById('priceList');
-        function renderPricesFrom(list, serviceId){
-          if(!priceWrap) return; priceWrap.innerHTML = '';
-          const svc = list.find(x=>x.id===serviceId) || list[0];
-          const items = (svc && Array.isArray(svc.prices))? svc.prices : [];
-          if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500 col-span-2">Harga belum tersedia.</div>')); return; }
-          items.forEach(it=> priceWrap.appendChild(el(`<div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between"><span>${it.name}</span><span class="font-semibold text-pink-700">Rp ${(+it.price||0).toLocaleString('id-ID')}</span></div>`)) );
-        }
-        if (servicesWrap && Array.isArray(cfg.services)){
-          servicesWrap.innerHTML = '';
-          cfg.services.forEach((s,i)=>{
-            const node = el(`
-              <button data-id="${s.id}" class="group rounded-2xl bg-white border border-pink-100 p-4 text-center flex flex-col items-center justify-center gap-2 hover:border-pink-300">
-                <span class="text-2xl">${s.icon}</span>
-                <span class="text-xs font-medium">${s.name}</span>
-              </button>
-            `);
-            node.addEventListener('click', ()=>{
-              state.service = s.name; state.serviceId = s.id;
-              [...servicesWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
-              node.classList.add('ring-2','ring-pink-400');
-              renderPricesFrom(cfg.services, state.serviceId);
-              updateSummary();
-            });
-            if(i===0){ node.classList.add('ring-2','ring-pink-400'); state.service = s.name; state.serviceId = s.id; }
-            servicesWrap.appendChild(node);
-          });
-          renderPricesFrom(cfg.services, state.serviceId);
-        }
-      } catch(e) {}
-    })();
-  </script>
-
-  <script>
-    // Register Service Worker (relative paths so it works on domain, subdomain, or subfolder)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(()=>{});
       });
     }
-
-    // Read config
-    let CONFIG = {};
-    try { CONFIG = JSON.parse(document.getElementById('app-config').textContent || '{}'); } catch(e) { CONFIG = {}; }
-    const services = CONFIG.services || [];
-    const team = CONFIG.team || [];
-    const timeSlots = CONFIG.timeSlots || ["09:00","10:30","11:40","12:00","13:30","14:30","16:00","17:30"];
-    const OWNER_WHATSAPP = CONFIG.ownerWhatsApp || '6281234567890';
-
-    // State
-    const state = { service:null, stylist: team[0] || null, date:null, time:null };
-
-    // Helper
     function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+    (async function(){
+      await APP.load();
+      applyBrand('brand');
+      renderBottomNav('bottomnav');
+      APP.injectSchema();
 
-    // Bottom nav only
-    document.getElementById('brand').textContent = CONFIG.salonName || 'Salon';
-    const bottomnav = document.getElementById('bottomnav');
-    const iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-    (CONFIG.pages||[]).forEach(p=>{
-      const isActive = location.pathname.endsWith(p.href);
-      const icon = iconMap[p.id] || '•';
-      const btn = el(`<a href="${p.href}" class="flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ${isActive?'text-pink-600 font-semibold':'text-slate-600'}"><span class="text-lg">${icon}</span><span>${p.name}</span></a>`);
-      bottomnav.appendChild(btn);
-    });
+      const state = { service:null, serviceId:null, stylist:(APP.cfg.team||[])[0]||null, date:null, time:null };
+      const summary = document.getElementById('summary');
+      const btnBook = document.getElementById('btnBook');
+      function updateSummary(){
+        const s = state; const parts = [];
+        if(s.service) parts.push(s.service);
+        if(s.stylist) parts.push(`dengan ${s.stylist.name}`);
+        if(s.date) parts.push(s.date.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'short'}));
+        if(s.time) parts.push(s.time);
+        btnBook.disabled = !(s.service && s.stylist && s.date && s.time);
+        summary.textContent = parts.length? parts.join(' • ') : 'Belum ada pilihan.';
+      }
 
-    // Services
-    const servicesWrap = document.getElementById('services');
-    services.forEach(s=>{
-      const node = el(`
-        <button data-id="${s.id}" class="group rounded-2xl bg-white border border-pink-100 p-4 text-center flex flex-col items-center justify-center gap-2 hover:border-pink-300">
-          <span class="text-2xl">${s.icon}</span>
-          <span class="text-xs font-medium">${s.name}</span>
-        </button>
-      `);
-      node.addEventListener('click', ()=>{
-        state.service = s.name;
-        state.serviceId = s.id;
-        [...servicesWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
-        node.classList.add('ring-2','ring-pink-400');
-        renderPriceList(state.serviceId);
-        updateSummary();
-      });
-      servicesWrap.appendChild(node);
-    });
+      function refreshSlots(){
+        const s = state;
+        if(!s.date){ s.date = new Date(); }
+        const wrap = document.getElementById('slots');
+        if(wrap){ wrap.innerHTML = '<div class="text-xs text-slate-500">Memuat slot…</div>'; }
+        APP.getSlots({ date:s.date, stylistId:s.stylist?.id, serviceId:s.serviceId }).then(slots=>{
+          if(!wrap) return;
+          wrap.innerHTML = '';
+          let added = 0;
+          let selectedExists = false;
+          slots.forEach(obj=>{
+            const t = typeof obj==='string'? obj : obj.time;
+            const available = typeof obj==='object'? (obj.available!==false) : true;
+            const rawStatus = (obj && obj.status) ? String(obj.status).toLowerCase() : '';
+            const booked = !available || rawStatus === 'booked';
+            const pending = rawStatus === 'hold' || rawStatus === 'pending';
 
-    // Render price list for selected service
-    const priceWrap = document.getElementById('priceList');
-    function formatIDR(n){ try { return 'Rp ' + (n||0).toLocaleString('id-ID'); } catch(e){ return 'Rp ' + n; } }
-    function renderPriceList(serviceId){
-      if(!priceWrap) return;
-      priceWrap.innerHTML = '';
-      const svc = (services||[]).find(x=>x.id===serviceId) || (services||[]).find(x=>x.name===state.service);
-      const items = (svc && Array.isArray(svc.prices)) ? svc.prices : [];
-      if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500 col-span-2">Harga belum tersedia.</div>')); return; }
-      items.forEach(it=>{
-        priceWrap.appendChild(el(`<div class="rounded-2xl bg-pink-50 px-3 py-2 flex items-center justify-between"><span class="text-xs text-pink-700">${it.name}</span><span class="font-semibold text-xs text-pink-700">${formatIDR(it.price)}</span></div>`));
-      });
-    }
+            let cls = 'rounded-2xl border px-4 py-3 text-sm ';
+            if (booked){
+              cls += 'bg-slate-100 border-slate-300 text-slate-500 opacity-70 cursor-not-allowed pointer-events-none line-through';
+            } else if (pending){
+              cls += 'bg-amber-50 border-amber-300 text-amber-800';
+            } else {
+              cls += 'bg-white border-pink-200 text-pink-700 hover:border-pink-400';
+            }
+            let badge = '';
+            if (booked) badge = ' <span class="ml-2 text-[10px] uppercase tracking-wide bg-slate-200 text-slate-700 px-1.5 py-[1px] rounded">Booked</span>';
+            else if (pending) badge = ' <span class="ml-2 text-[10px] uppercase tracking-wide bg-amber-100 text-amber-800 px-1.5 py-[1px] rounded">Hold</span>';
 
-    // Team
-    const teamWrap = document.getElementById('team');
-    team.forEach((m,i)=>{
-      const card = el(`
-        <button class="snap-start min-w-[220px] card bg-white rounded-2xl text-left overflow-hidden mt-3">
-          <div class="flex items-center gap-3 p-3">
-            <img class="h-12 w-12 rounded-full object-cover" src="${m.photo}" alt="${m.name}">
-            <div class="flex-1">
-              <p class="font-semibold text-sm leading-tight">${m.name}</p>
-              <p class="text-xs text-slate-500">${m.role}</p>
-              <p class="text-xs text-pink-600 font-medium mt-0.5">★ ${m.rating}</p>
+            const title = booked ? 'Slot sudah terisi' : (pending ? 'Slot dalam proses' : 'Pilih jam ini');
+            const btn = el(`<button class="${cls}" ${booked?'disabled':''} title="${title}">${t}${badge}</button>`);
+            if(!booked && !pending){
+              btn.addEventListener('click', ()=>{
+                state.time = t;
+                ;[].forEach.call(wrap.children, c=>c.classList.remove('bg-pink-600','text-white','border-pink-600','font-semibold'));
+                // normalize base classes so selected state is consistent
+                btn.classList.remove('bg-white','border-pink-200','text-pink-700','hover:border-pink-400','bg-amber-50','border-amber-300','text-amber-800');
+                btn.classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
+                updateSummary();
+              });
+            }
+            if (state.time === t && !booked && !pending){
+              btn.classList.remove('bg-white','border-pink-200','text-pink-700','hover:border-pink-400','bg-amber-50','border-amber-300','text-amber-800');
+              btn.classList.add('bg-pink-600','text-white','border-pink-600','font-semibold');
+              selectedExists = true;
+            }
+            wrap.appendChild(btn);
+            added++;
+          });
+          if (added === 0){
+            wrap.appendChild(el('<div class="text-xs text-slate-500">Tidak ada slot tersedia.</div>'));
+          }
+          if (state.time && !selectedExists){
+            state.time = null;
+            updateSummary();
+          }
+        });
+      }
+
+      renderServicesWithPrices(APP.cfg.services||[], 'services', 'priceList', (svc)=>{ state.service=svc.name; state.serviceId=svc.id; updateSummary(); refreshSlots(); });
+
+      const teamWrap = document.getElementById('team');
+      (APP.cfg.team||[]).forEach((m,i)=>{
+        const card = el(`
+          <button class="snap-start min-w-[220px] card bg-white rounded-2xl text-left overflow-hidden">
+            <div class="flex items-center gap-3 p-3">
+              <img loading="lazy" class="h-12 w-12 rounded-full object-cover" src="${m.photo}" alt="${m.name}">
+              <div class="flex-1">
+                <p class="font-semibold text-sm leading-tight">${m.name}</p>
+                <p class="text-xs text-slate-500">${m.role}</p>
+                <p class="text-xs text-pink-600 font-medium mt-0.5">★ ${m.rating}</p>
+              </div>
             </div>
-          </div>
-        </button>
-      `);
-      card.addEventListener('click', ()=>{
-        state.stylist = m;
-        document.getElementById('profile-photo').src = m.photo;
-        document.getElementById('profile-name').textContent = m.name;
-        document.getElementById('profile-role').textContent = m.role || '';
-        [...teamWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
-        card.classList.add('ring-2','ring-pink-400');
-        updateSummary();
+          </button>
+        `);
+        card.addEventListener('click', ()=>{
+          state.stylist = m;
+          document.getElementById('profile-photo').src = m.photo;
+          document.getElementById('profile-name').textContent = m.name;
+          document.getElementById('profile-role').textContent = m.role || '';
+          [...teamWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
+          card.classList.add('ring-2','ring-pink-400');
+          updateSummary();
+          refreshSlots();
+        });
+        if(i===0){
+          card.classList.add('ring-2','ring-pink-400');
+          document.getElementById('profile-photo').src = m.photo;
+          document.getElementById('profile-name').textContent = m.name;
+          document.getElementById('profile-role').textContent = m.role || '';
+        }
+        teamWrap.appendChild(card);
       });
-      if(i===0) card.classList.add('ring-2','ring-pink-400');
-      teamWrap.appendChild(card);
-    });
 
-    // Week calendar: today + 6 days
-    const weekWrap = document.getElementById('week');
-    const now = new Date();
-    const hari = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
-    for (let i=0;i<7;i++){
-      const d = new Date(now);
-      d.setDate(now.getDate()+i);
-      const isToday = i===0;
-      const node = el(`
-        <button class="rounded-xl py-2 px-2 text-xs ${isToday?'bg-pink-600 text-white':'bg-white text-pink-700'} border border-transparent hover:border-pink-300">
-          <div class="uppercase">${hari[d.getDay()]}</div>
-          <div class="font-bold">${d.getDate()}</div>
-        </button>
-      `);
-      node.addEventListener('click', ()=>{
-        state.date = d;
-        [...weekWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
-        node.classList.add('ring-2','ring-pink-400');
-        updateSummary();
-      });
-      weekWrap.appendChild(node);
-    }
+      const weekWrap = document.getElementById('week');
+      const now = new Date();
+      const hari = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+      for (let i=0;i<7;i++){
+        const d = new Date(now); d.setDate(now.getDate()+i);
+        const isToday = i===0;
+        const node = el(`<button class="rounded-xl py-2 px-2 text-xs ${isToday?'bg-pink-600 text-white':'bg-white text-pink-700'} border border-transparent hover:border-pink-300"><div class="uppercase">${hari[d.getDay()]}</div><div class="font-bold">${d.getDate()}</div></button>`);
+        node.addEventListener('click', ()=>{
+          state.date = d;
+          [...weekWrap.children].forEach(c=>c.classList.remove('ring-2','ring-pink-400'));
+          node.classList.add('ring-2','ring-pink-400');
+          updateSummary();
+        });
+        weekWrap.appendChild(node);
+      }
 
-    // Slots
-    const slotsWrap = document.getElementById('slots');
-    timeSlots.forEach(t=>{
-      const btn = el(`<button class="rounded-2xl border border-pink-200 bg-white px-4 py-3 text-sm text-pink-700 hover:border-pink-400">${t}</button>`);
-      btn.addEventListener('click', ()=>{
-        state.time = t;
-        [...slotsWrap.children].forEach(c=>c.classList.remove('border-pink-600','font-semibold'));
-        btn.classList.add('border-pink-600','font-semibold');
-        updateSummary();
-      });
-      slotsWrap.appendChild(btn);
-    });
+      const slotsWrap = document.getElementById('slots');
+      refreshSlots();
 
-    // Summary + Book button
-    const summary = document.getElementById('summary');
-    const btnBook = document.getElementById('btnBook');
-    function updateSummary(){
-      const s = state;
-      const parts = [];
-      if(s.service) parts.push(s.service);
-      if(s.stylist) parts.push(`dengan ${s.stylist.name}`);
-      if(s.date) parts.push(s.date.toLocaleDateString('id-ID', {weekday:'long', day:'2-digit', month:'short'}));
-      if(s.time) parts.push(s.time);
-      btnBook.disabled = !(s.service && s.stylist && s.date && s.time);
-      summary.textContent = parts.length? parts.join(' • ') : 'Belum ada pilihan.';
-    }
+      
 
-    // Modal handlers
-    const dlg = document.getElementById('dlg');
-    document.getElementById('dlgClose').onclick = ()=> dlg.close();
-    document.getElementById('dlgConfirm').onclick = ()=>{
-      dlg.close();
-      const s = state;
-      const customer = (document.getElementById('custName')?.value || '').trim();
-      if(!customer){ alert('Mohon isi Nama Pemesan.'); return; }
-      try{ localStorage.setItem('custName', customer);}catch(e){}
-      const msg = `Halo, saya ingin booking:\n\n` +
-        `Nama Pemesan: ${customer}\n` +
-        `Layanan: ${s.service}\n` +
-        `Stylist: ${s.stylist?.name || '-'}\n` +
-        `Tanggal: ${s.date ? s.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-'}\n` +
-        `Jam: ${s.time || '-'}\n`;
-      const url = `https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    };
-    btnBook.onclick = ()=>{
-      document.getElementById('cName').textContent = state.stylist?.name ?? '-';
-      document.getElementById('cService').textContent = state.service ?? '-';
-      document.getElementById('cDate').textContent = state.date ? state.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-';
-      document.getElementById('cTime').textContent = state.time ?? '-';
-      try{
-        const saved = localStorage.getItem('custName');
-        if(saved) document.getElementById('custName').value = saved;
-      }catch(e){}
-      dlg.showModal();
-    };
+      const dlg = document.getElementById('dlg');
+      document.getElementById('dlgClose').onclick = ()=> dlg.close();
+      document.getElementById('dlgConfirm').onclick = async ()=>{
+        dlg.close();
+        const s = state;
+        const customer = (document.getElementById('custName')?.value || '').trim();
+        if(!customer){ alert('Mohon isi Nama Pemesan.'); return; }
+        try{ localStorage.setItem('custName', customer);}catch(e){}
+        const msg = `Halo, saya ingin booking:\n\n` +
+          `Nama Pemesan: ${customer}\n` +
+          `Layanan: ${s.service}\n` +
+          `Stylist: ${s.stylist?.name || '-'}\n` +
+          `Tanggal: ${s.date ? s.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-'}\n` +
+          `Jam: ${s.time || '-'}\n`;
+        // Send to Google Apps Script if configured
+        const payload = {
+          customer,
+          service: s.service,
+          serviceId: s.serviceId,
+          stylistId: s.stylist?.id || '',
+          stylist: s.stylist?.name || '',
+          date: APP._fmtYMD(s.date || new Date()),
+          time: s.time,
+          createdAt: new Date().toISOString()
+        };
+        try{ const resp = await APP.postBooking(payload); if(!resp.ok){ console.warn('Booking not saved to sheet'); } }catch(e){}
+        // WhatsApp
+        const url = `https://wa.me/${(APP.cfg&&APP.cfg.ownerWhatsApp)||'6281234567890'}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+        // Refresh slots
+        refreshSlots();
+      };
+      btnBook.onclick = ()=>{
+        document.getElementById('cName').textContent = state.stylist?.name ?? '-';
+        document.getElementById('cService').textContent = state.service ?? '-';
+        document.getElementById('cDate').textContent = state.date ? state.date.toLocaleDateString('id-ID',{weekday:'long', day:'2-digit', month:'long', year:'numeric'}) : '-';
+        document.getElementById('cTime').textContent = state.time ?? '-';
+        try{ const saved = localStorage.getItem('custName'); if(saved) document.getElementById('custName').value = saved; }catch(e){}
+        dlg.showModal();
+      };
 
-    // Init defaults
-    state.date = new Date();
-    if (weekWrap && weekWrap.children[0]) weekWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (slotsWrap && slotsWrap.children[0]) slotsWrap.children[0].classList.add('bg-white','text-pink-700','border-pink-600','font-semibold');
-    state.time = timeSlots[0];
-    if (servicesWrap && servicesWrap.children[0]) servicesWrap.children[0].classList.add('ring-2','ring-pink-400');
-    if (services[0]){ state.service = services[0].name; state.serviceId = services[0].id; }
-    renderPriceList(state.serviceId);
-    if (team[0]){
-      document.getElementById('profile-photo').src = team[0].photo;
-      document.getElementById('profile-name').textContent = team[0].name;
-      document.getElementById('profile-role').textContent = team[0].role || '';
-    }
-    updateSummary();
+      state.date = new Date();
+      if (weekWrap && weekWrap.children[0]) weekWrap.children[0].classList.add('ring-2','ring-pink-400');
+      // initial slot selection will occur on user click; no preselect when dynamic
+      // state.time left as null until user chooses
+      updateSummary();
+    })();
   </script>
 </body>
 </html>
+
+
+

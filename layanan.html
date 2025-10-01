@@ -16,6 +16,7 @@
     body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .card{ box-shadow: 0 8px 24px rgba(0,0,0,.06); }
   </style>
+  <meta name="description" content="Daftar layanan dan harga Beauty Salon">
 </head>
 <body class="bg-gradient-to-b from-rose-50 to-pink-100 text-slate-800">
   <header class="sticky top-0 z-30 bg-gradient-to-r from-rose-600 to-pink-600 text-white">
@@ -23,9 +24,9 @@
       <div class="flex items-center gap-3">
         <h1 id="brand" class="font-semibold text-lg tracking-wide">Beauty Salon</h1>
       </div>
-      
     </div>
   </header>
+
   <main class="max-w-3xl mx-auto p-4 pb-24">
     <h2 class="text-lg font-semibold text-pink-700">Layanan Kami</h2>
     <div id="services" class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
@@ -35,100 +36,13 @@
     </div>
   </main>
 
-  <!-- Mobile Bottom Nav -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-pink-100 safe-bottom">
     <div id="bottomnav" class="max-w-md mx-auto flex items-stretch justify-around py-2 px-2 text-xs"></div>
   </nav>
 
-  <script id="app-config" type="application/json">
-  {
-    "salonName": "Beauty Salon",
-    "ownerWhatsApp": "6281234567890",
-    "services": [
-      { "id":"style",  "name":"Gaya Rambut",  "icon":"💇‍♀️", "prices":[
-        {"name":"Cuci & Blow", "price":80000},
-        {"name":"Potong Rambut", "price":120000},
-        {"name":"Hair Styling", "price":180000}
-      ] },
-      { "id":"facial", "name":"Facial",       "icon":"🧖‍♀️", "prices":[
-        {"name":"Basic Facial", "price":150000},
-        {"name":"Deep Cleansing", "price":220000}
-      ] },
-      { "id":"makeup", "name":"Make Up",      "icon":"💄", "prices":[
-        {"name":"Daily Makeup", "price":250000},
-        {"name":"Party Makeup", "price":400000}
-      ] },
-      { "id":"care",   "name":"Perawatan",    "icon":"🧴", "prices":[
-        {"name":"Hair Mask", "price":170000},
-        {"name":"Hair Spa", "price":220000}
-      ] },
-      { "id":"color",  "name":"Pewarnaan",    "icon":"🎨", "prices":[
-        {"name":"Highlight", "price":350000},
-        {"name":"Full Color", "price":500000}
-      ] },
-      { "id":"spa",    "name":"Spa",          "icon":"💆‍♀️", "prices":[
-        {"name":"Body Scrub", "price":180000},
-        {"name":"Body Spa", "price":300000}
-      ] }
-    ],
-    "team": [],
-    "timeSlots": ["09:00", "10:30", "11:40", "12:00", "13:30", "14:30", "16:00", "17:30"],
-    "pages": [
-      {"id":"home","name":"Beranda","href":"index.html"},
-      {"id":"services","name":"Layanan","href":"layanan.html"},
-      {"id":"team","name":"Tim","href":"tim.html"},
-      {"id":"portfolio","name":"Portofolio","href":"portofolio.html"},
-      {"id":"about","name":"Tentang","href":"tentang.html"},
-      {"id":"contact","name":"Kontak","href":"kontak.html"}
-    ]
-  }
-  </script>
-  <script>
-    // Override data from shared config.json and rebuild services + prices on Layanan page
-    (async function(){
-      try{
-        const res = await fetch('./config.json', { cache:'no-store' });
-        if(!res.ok) return; const cfg = await res.json();
-        document.getElementById('brand').textContent = cfg.salonName || 'Salon';
-        const bot = document.getElementById('bottomnav');
-        if (bot && Array.isArray(cfg.pages)){
-          const iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-          bot.innerHTML='';
-          cfg.pages.forEach(p=>{
-            const isActive = location.pathname.endsWith(p.href);
-            const a = document.createElement('a');
-            a.href = p.href;
-            a.className = 'flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ' + (isActive?'text-pink-600 font-semibold':'text-slate-600');
-            a.innerHTML = '<span class="text-lg">'+(iconMap[p.id]||'•')+'</span><span>'+p.name+'</span>';
-            bot.appendChild(a);
-          });
-        }
-        const servicesWrap = document.getElementById('services');
-        const priceWrap = document.getElementById('svcPriceList');
-        function formatIDR(n){ try { return 'Rp ' + (n||0).toLocaleString('id-ID'); } catch(e){ return 'Rp ' + n; } }
-        function renderSvcPriceList(serviceId){
-          if(!priceWrap) return; priceWrap.innerHTML='';
-          const svc = (cfg.services||[]).find(x=>x.id===serviceId) || (cfg.services||[])[0];
-          const items = (svc && Array.isArray(svc.prices))? svc.prices : [];
-          if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500">Harga belum tersedia.</div>')); return; }
-          items.forEach(function(it){ priceWrap.appendChild(el('<div class="card bg-white rounded-2xl px-3 py-2 flex items-center justify-between"><span>'+it.name+'</span><span class="font-semibold text-pink-700">'+formatIDR(it.price)+'</span></div>')); });
-        }
-        if (servicesWrap && Array.isArray(cfg.services)){
-          servicesWrap.innerHTML='';
-          cfg.services.forEach(function(s,i){
-            var node = el('\n        <button data-id="'+s.id+'" class="card bg-white rounded-2xl p-4 flex items-center gap-3 text-left">\n          <div class="text-2xl">'+s.icon+'</div>\n          <div class="font-medium">'+s.name+'</div>\n        </button>\n      ');
-            node.addEventListener('click', function(){
-              ;[].forEach.call(servicesWrap.children, function(c){ c.classList.remove('ring-2','ring-pink-400'); });
-              node.classList.add('ring-2','ring-pink-400');
-              renderSvcPriceList(s.id);
-            });
-            servicesWrap.appendChild(node);
-            if(i===0){ node.classList.add('ring-2','ring-pink-400'); renderSvcPriceList(s.id);} 
-          });
-        }
-      }catch(e){}
-    })();
-  </script>
+  <script src="app.js"></script>
+  <script src="nav.js"></script>
+  <script src="services.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -136,56 +50,13 @@
       });
     }
     function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
-    const cfg = JSON.parse(document.getElementById('app-config').textContent);
-    document.getElementById('brand').textContent = cfg.salonName || 'Salon';
-    const nav = document.getElementById('topnav');
-    if (nav) {
-      cfg.pages.forEach(p=>{
-        const a = el(`<a href="${p.href}" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20">${p.name}</a>`);
-        if (location.pathname.endsWith(p.href)) a.classList.add('ring-2','ring-white/70');
-        nav.appendChild(a);
-      });
-    }
-    const servicesWrap = document.getElementById('services');
-    const priceWrap = document.getElementById('svcPriceList');
-    function formatIDR(n){ try { return 'Rp ' + (n||0).toLocaleString('id-ID'); } catch(e){ return 'Rp ' + n; } }
-    function renderSvcPriceList(serviceId){
-      if(!priceWrap) return;
-      priceWrap.innerHTML = '';
-      var svc = (cfg.services||[]).find(function(x){ return x.id===serviceId; });
-      var items = (svc && Array.isArray(svc.prices))? svc.prices : [];
-      if(!items.length){ priceWrap.appendChild(el('<div class="text-xs text-slate-500">Harga belum tersedia.</div>')); return; }
-      items.forEach(function(it){
-        priceWrap.appendChild(el('<div class="card bg-white rounded-2xl px-3 py-2 flex items-center justify-between"><span>'+it.name+'</span><span class="font-semibold text-pink-700">'+formatIDR(it.price)+'</span></div>'));
-      });
-    }
-    (cfg.services||[]).forEach(function(s,i){
-      var node = el('\n        <button data-id="'+s.id+'" class="card bg-white rounded-2xl p-4 flex items-center gap-3 text-left">\n          <div class="text-2xl">'+s.icon+'</div>\n          <div class="font-medium">'+s.name+'</div>\n        </button>\n      ');
-      node.addEventListener('click', function(){
-        ;[].forEach.call(servicesWrap.children, function(c){ c.classList.remove('ring-2','ring-pink-400'); });
-        node.classList.add('ring-2','ring-pink-400');
-        renderSvcPriceList(s.id);
-      });
-      if(i===0) { node.classList.add('ring-2','ring-pink-400'); setTimeout(function(){ renderSvcPriceList(s.id); },0); }
-      servicesWrap.appendChild(node);
-    });
-  </script>
-  <script>
-    (function(){
-      var bot = document.getElementById('bottomnav');
-      if(!bot) return;
-      var cfg = JSON.parse(document.getElementById('app-config').textContent || '{}');
-      var iconMap = { home:'🏠', services:'💇', team:'👥', portfolio:'📸', about:'ℹ️', contact:'☎️' };
-      (cfg.pages||[]).forEach(function(p){
-        var a = document.createElement('a');
-        a.href = p.href;
-        a.className = 'flex-1 flex flex-col items-center justify-center rounded-xl py-1.5 ' + (location.pathname.endsWith(p.href)?'text-pink-600 font-semibold':'text-slate-600');
-        a.innerHTML = '<span class="text-lg">'+(iconMap[p.id]||'•')+'</span><span>'+p.name+'</span>';
-        bot.appendChild(a);
-      });
+    (async function(){
+      await APP.load();
+      applyBrand('brand');
+      renderBottomNav('bottomnav');
+      APP.injectSchema();
+      renderServicesWithPrices((APP.cfg && APP.cfg.services) || [], 'services', 'svcPriceList');
     })();
   </script>
 </body>
 </html>
-
-
